@@ -10,7 +10,7 @@ def fs_lasso_cv(X,y,feat_list, n_alphas=1000, cv=10, tol=0.00001, max_iter=10000
     coefs = lcv.fit(X,y).coef_
 
     # force shrinkage to zero if hard_shrink is provided
-    if hard_shrink is not None: np.place(coefs, coefs < hard_shrink, 0)
+    if hard_shrink is not None: np.place(coefs, np.abs(coefs) < hard_shrink, 0)
     
     selected_feats = list(it.compress(feat_list, coefs))
     
@@ -23,7 +23,7 @@ def fs_lars_cv(X,y,feat_list, n_alphas=1000, cv=10, max_iter=1000, hard_shrink=N
     coefs = lcv.fit(X,y).coef_
 
     # force shrinkage to zero if hard_shrink is provided
-    if hard_shrink is not None: np.place(coefs, coefs < hard_shrink, 0)
+    if hard_shrink is not None: np.place(coefs, np.abs(coefs) < hard_shrink, 0)
     
     selected_feats = list(it.compress(feat_list, coefs))
     

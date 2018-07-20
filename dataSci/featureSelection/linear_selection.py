@@ -28,3 +28,19 @@ def fs_lars_cv(X,y,feat_list, n_alphas=1000, cv=10, max_iter=1000, hard_shrink=N
     selected_feats = list(it.compress(feat_list, coefs))
     
     return selected_feats
+
+
+def fs_ardr(X,y,feat_list, max_iter=300, tol=0.001, hard_shrink=.01):
+    '''Wrapper function to build a ARDRegression model from sklearn and return important features'''
+    '''Automatic Relevance Determination Regression (ARDR) can be thought of as a Sparse Bayesian Ridge Regression'''
+    '''http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ARDRegression.html'''
+    
+    bridge = linear_model.ARDRegression(tol=tol, n_iter=max_iter)
+    coefs = bridge.fit(X,y).coef_
+
+    # use hard_shrink as the cutoff for 'significant' features
+    np.place(coefs, np.abs(coefs) < hard_shrink, 0)
+    
+    selected_feats = list(it.compress(feat_list, coefs))
+    
+    return selected_feats

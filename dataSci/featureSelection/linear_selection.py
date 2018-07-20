@@ -1,19 +1,18 @@
-def fs_lasso_cv(X,y,feat_list, n_alphas=1000, cv=10, tol=0.00001, max_iter=10000):
-    from multiprocessing import cpu_count
-    from sklearn.linear_model import LassoCV
-    import numpy as np
-    from itertools import compress 
+import multiprocessing as mp
+import numpy as np
+import itertools as it
+from sklearn import linear_model
 
-    lcv = LassoCV(n_jobs = max(1, cpu_count()-1), n_alphas=n_alphas, cv=cv, tol=tol, max_iter=max_iter)
+def fs_lasso_cv(X,y,feat_list, n_alphas=1000, cv=10, tol=0.00001, max_iter=10000):
+    '''Wrapper function to build a LassoCV model from sklearn and return important features'''
+    
+    lcv = linear_model.LassoCV(n_jobs = max(1, mp.cpu_count()-1), n_alphas=n_alphas, cv=cv, tol=tol, max_iter=max_iter)
     lcv.fit(X,y)
-    return list(compress(feat_list, lcv.coef_))
+    return list(it.compress(feat_list, lcv.coef_))
 
 def fs_lars_cv(X,y,feat_list, n_alphas=1000, cv=10, max_iter=1000):
-    from multiprocessing import cpu_count
-    from sklearn.linear_model import LarsCV
-    import numpy as np
-    from itertools import compress 
-
-    lcv = LarsCV(n_jobs = max(1, cpu_count()-1), max_n_alphas=n_alphas, cv=cv, max_iter=max_iter)
+    '''Wrapper function to build a LarsCV model from sklearn and return important features'''
+    
+    lcv = linear_model.LarsCV(n_jobs = max(1, mp.cpu_count()-1), max_n_alphas=n_alphas, cv=cv, max_iter=max_iter)
     lcv.fit(X,y)
-    return list(compress(feat_list, lcv.coef_))
+    return list(it.compress(feat_list, lcv.coef_))

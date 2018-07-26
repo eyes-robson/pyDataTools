@@ -1,0 +1,42 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+//option java_multiple_files = true;
+//option java_package = "io.grpc.examples.helloworld";
+//option java_outer_classname = "HelloWorldProto";
+//option objc_class_prefix = "HLW";
+
+package featureselector;
+
+// define a feature selection service
+service FeatureSelector {
+  rpc fsLassoCV(numericArray) returns (stringList) {}
+}
+
+// add a request message of columns of data, each with a column name
+message numericArray {
+  message Column {
+    string name = 1;
+    repeated float entries = 2;
+  }
+  repeated Column covariates = 1;
+  Column response = 2;
+}
+
+// add a response message of strings
+message stringList {
+  repeated string messages = 1;
+}

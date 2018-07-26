@@ -1,0 +1,4 @@
+Below are some of the gRPC commands to build and whatnot, so I don't worry about forgetting :)
+
+To compile the proto, from the featureselector folder:
+python -m grpc_tools.protoc -I../protos --python_out=. --grpc_python_out=. ../protos/featureselector.proto
